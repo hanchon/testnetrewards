@@ -6,7 +6,11 @@ import '../../../node_modules/react-grid-layout/css/styles.css';
 import '../../../node_modules/react-resizable/css/styles.css';
 import SearchBar from 'src/components/searchBar/searchBar';
 
-import arrowright from '../../images/arrowright.svg';
+import magnifyingglass from '../../images/magnifyingglass.svg';
+import logo from '../../images/logo.svg';
+import rektdrop from '../../images/rektdrop.svg';
+import rewards from '../../images/rewards.svg';
+import cardimage from '../../images/cardimage.svg';
 
 import MissionData from '../../assets/missiondata';
 
@@ -71,45 +75,21 @@ function DashboardGrid(props: any) {
       containerPadding={[0, 0]}
       layouts={layout}
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480}}
+      rowHeight={200}
+      margin={[48, 48]}
       cols={{lg: 12, md: 12, sm: 8, xs: 4}}>
       {allMissions.map(mission => (
         <div className="d--card" key={mission.id}>
+          <div className="d--card--tag">15 EVMOS</div>
+          <img src={cardimage} alt="Card" />
           <h3 className="d--card--title">{mission.task}</h3>
           <div className="d--row">
             {statusForCard(mission.id, mission.points)}
           </div>
-          <p className="d--card--body">{`M${mission.missionId} · ${mission.points} pts`}</p>
+          <p className="d--card--body">{`Mission ${mission.missionId} · ${mission.points} pts`}</p>
         </div>
       ))}
     </ResponsiveGridLayout>
-  );
-}
-
-function DashboardSummary(props: any) {
-  const {isMobile, userPoints, numComplete, numIncomplete} = props;
-  const dateLastUpdated = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-  return (
-    <div className={`d--summary ${isMobile ? 'd--mobile' : 'd--desktop'}`}>
-      <h4 className="d--summary--title">Status</h4>
-      <div className="d--row">
-        <p className="d--summary--subtitle">{`${userPoints} points`}</p>
-      </div>
-      <div className="d--row">
-        <div className="d--icon" style={{background: '#1CDC30'}} />
-        <p className="d--summary--body">{`${numComplete} Complete`}</p>
-      </div>
-      <div className="d--row">
-        <div className="d--icon" style={{background: '#F8A933'}} />
-        <p className="d--summary--body">{`${numIncomplete} Incomplete`}</p>
-      </div>
-      <p className="d--summary--caption">{`Last updated ${dateLastUpdated}.`}</p>
-    </div>
   );
 }
 
@@ -133,6 +113,14 @@ export default function DashboardPage(props: any) {
     .map(mission => mission.points)
     .reduce((a, b) => a + b, 0);
 
+  const dateLastUpdated = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+
   // Search at new address
   const submitRequest = (event: any) => {
     event.preventDefault();
@@ -143,37 +131,31 @@ export default function DashboardPage(props: any) {
 
   return (
     <div className="page-base d--page-base">
-      <div className="d--page-left">
+      <div className="d--page-top">
         <div className="d--page-header">
-          <h3 className="la--title d--title">
-            <span className="la--title-evmos">Evmos </span>Airdrop Rewards
-          </h3>
-          <div className="d--row">
-            <div className="d--icon" style={{background: '#1CDC30'}} />
-            <p className="d--subtitle">{`${userMissions.length}/${totalNumMissions}`}</p>
+          <div className="d--row d--page-header-mobile">
+            <img src={logo} alt="Evmos" className="d--header-logo" />
+            <img src={rektdrop} alt="Rektdrop" className="d--header-title" />
+            <img src={rewards} alt="Rewards" className="d--header-subtitle" />
           </div>
+          <form onSubmit={submitRequest}>
+            <div className="d--header-search">
+              <SearchBar placeholderText={userAddress} isLarge />
+              <button className="la--button" type="submit">
+                <img src={magnifyingglass} alt="Arrow Right" />
+              </button>
+            </div>
+          </form>
         </div>
-        <form onSubmit={submitRequest}>
-          <div className="la--search">
-            <SearchBar placeholderText={userAddress} isLarge />
-            <button className="la--button" type="submit">
-              <img src={arrowright} alt="Arrow Right" />
-            </button>
+        <div className="d--title-container">
+          <div className="d--col" style={{flex: 1}}>
+            <h3 className="d--title d--desktop">{userAddress}</h3>
+            <p className="d--caption">{`Last Updated – ${dateLastUpdated}`}</p>
           </div>
-        </form>
-        <DashboardSummary
-          isMobile
-          userPoints={userPoints}
-          numComplete={numComplete}
-          numIncomplete={numIncomplete}
-        />
-        <DashboardGrid userMissions={userMissions} />
+          <h3 className="d--subtitle">{`${numComplete}/${totalNumMissions}`}</h3>
+        </div>
       </div>
-      <DashboardSummary
-        userPoints={userPoints}
-        numComplete={numComplete}
-        numIncomplete={numIncomplete}
-      />
+      <DashboardGrid userMissions={userMissions} />
     </div>
   );
 }

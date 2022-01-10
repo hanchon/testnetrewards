@@ -1,8 +1,8 @@
 .base {
-  background-color: #2f2f2f;
+  background-color: none;
+  border: 1px solid #ffffffaa;
   display: flex;
   flex-direction: row;
-  border-radius: 12px;
   width: 500px;
   max-width: 50vw;
   height: 32px;
@@ -37,22 +37,12 @@
   white-space: nowrap;
 }
 
-.magnifying-glass {
-  width: 24px;
-  height: 24px;
-  color: white;
-
-  margin: auto;
-  padding-right: 16px;
+::placeholder {
+  color: #ffffffaa;
 }
 
 @media screen and (max-width: 480px) {
   .search-bar {
     font-size: 16px;
-  }
-
-  .base-large {
-    /* 88px is width of search button + margin */
-    width: calc(100% - 88px);
   }
 }

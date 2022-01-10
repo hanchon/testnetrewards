@@ -1,7 +1,15 @@
+.lo--page-base {
+  background: #0f162a;
+}
+
+.lo--page-body {
+  justify-content: center;
+}
+
 .lo--title {
   margin-top: -48px;
-  font-size: 18px;
-  font-weight: 300;
+  font-size: 24px;
+  font-weight: 700;
   text-align: center;
-  color: white;
+  color: #f4ddb5;
 }
